@@ -47,26 +47,32 @@ let i = arc.ISA.Value
 
 let tables = i.ArcTables
 
+let matchIsaValue (iv: ISAValue) =
+    match iv.TryValueText with
+    | Some t -> t
+    | None -> ""
+    
 let getExperimentColumn (file:string) =
     match experimentColumnType with
-    | "Parameter" -> (tables).ParametersOf(file).WithName(experimentColumn).[0].ValueText
-    | "Characteristic" -> (tables).CharacteristicsOf(file).WithName(experimentColumn).[0].ValueText
-    | "Factor" -> (tables).FactorsOf(file).WithName(experimentColumn).[0].ValueText
+    | "Parameter" -> (tables).ParametersOf(file).WithName(experimentColumn).[0] |> matchIsaValue
+    | "Characteristic" -> (tables).CharacteristicsOf(file).WithName(experimentColumn).[0] |> matchIsaValue
+    | "Factor" -> (tables).FactorsOf(file).WithName(experimentColumn).[0] |> matchIsaValue
     | _ -> failwith $"{tables} not supported"
 
 let getReplicateColumn (file:string) =
     match replicateColumnType with
-    | "Parameter" -> (tables).ParametersOf(file).WithName(replicateColumn).[0].ValueText
-    | "Characteristic" -> (tables).CharacteristicsOf(file).WithName(replicateColumn).[0].ValueText
-    | "Factor" -> (tables).FactorsOf(file).WithName(replicateColumn).[0].ValueText
+    | "Parameter" -> (tables).ParametersOf(file).WithName(replicateColumn).[0] |> matchIsaValue
+    | "Characteristic" -> (tables).CharacteristicsOf(file).WithName(replicateColumn).[0] |> matchIsaValue
+    | "Factor" -> (tables).FactorsOf(file).WithName(replicateColumn).[0] |> matchIsaValue
     | _ -> failwith $"{tables} not supported"
 
 let getAcquisitionColumn (file:string) =
     match acquisitionColumnType with
-    | "Parameter" -> (tables).ParametersOf(file).WithName(acquisitionColumn).[0].ValueText
-    | "Characteristic" -> (tables).CharacteristicsOf(file).WithName(acquisitionColumn).[0].ValueText
-    | "Factor" -> (tables).FactorsOf(file).WithName(acquisitionColumn).[0].ValueText
+    | "Parameter" -> (tables).ParametersOf(file).WithName(acquisitionColumn).[0] |> matchIsaValue
+    | "Characteristic" -> (tables).CharacteristicsOf(file).WithName(acquisitionColumn).[0] |> matchIsaValue
+    | "Factor" -> (tables).FactorsOf(file).WithName(acquisitionColumn).[0] |> matchIsaValue
     | _ -> failwith $"{tables} not supported"
+
 
 let outputTable = i.GetAssay(assay).GetTable "MassSpectrometry"
 let outputFiles =
